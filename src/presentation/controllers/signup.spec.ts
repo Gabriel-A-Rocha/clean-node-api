@@ -77,13 +77,30 @@ describe("SignUp Controller", () => {
       body: {
         name: "any_name",
         email: "any_email@email.com",
-        password: "any_password_",
+        password: "any_password",
       },
     };
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(
       new MissingParamError("passwordConfirmation")
+    );
+  });
+
+  test("Should return 400 if password confirmation fails", () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: "any_name",
+        email: "any_email@email.com",
+        password: "any_password",
+        passwordConfirmation: "different_password",
+      },
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(
+      new InvalidParamError("passwordConfirmation")
     );
   });
 
@@ -96,7 +113,7 @@ describe("SignUp Controller", () => {
       body: {
         name: "any_name",
         email: "invalid_email@email.com",
-        password: "any_password_",
+        password: "any_password",
         passwordConfirmation: "any_password",
       },
     };
@@ -114,7 +131,7 @@ describe("SignUp Controller", () => {
       body: {
         name: "any_name",
         email: "any_email@email.com",
-        password: "any_password_",
+        password: "any_password",
         passwordConfirmation: "any_password",
       },
     };
@@ -123,8 +140,6 @@ describe("SignUp Controller", () => {
   });
 
   test("Should return 500 if EmailValidator throws", () => {
-    // const emailValidatorStub = makeEmailValidatorWithError();
-
     const { sut, emailValidatorStub } = makeSut();
 
     jest.spyOn(emailValidatorStub, "isValid").mockImplementation(() => {
@@ -135,7 +150,7 @@ describe("SignUp Controller", () => {
       body: {
         name: "any_name",
         email: "any_email@email.com",
-        password: "any_password_",
+        password: "any_password",
         passwordConfirmation: "any_password",
       },
     };
