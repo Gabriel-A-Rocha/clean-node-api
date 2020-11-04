@@ -58,6 +58,7 @@ describe("SignUp Controller", () => {
   test("Should return 400 if no name is provided", async () => {
     // sut: system under test
     const { sut } = makeSut();
+
     const httpRequest = {
       body: {
         email: "any_email@mail.com",
@@ -65,7 +66,9 @@ describe("SignUp Controller", () => {
         passwordConfirmation: "any_password",
       },
     };
+
     const httpResponse = await sut.handle(httpRequest);
+
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError("name"));
   });
