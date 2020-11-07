@@ -19,4 +19,13 @@ export const MongoHelper = {
     const collection = await this.client.db().collection(name);
     return collection;
   },
+
+  map: (collection: any): any => {
+    const { _id, ...rest } = collection;
+
+    return {
+      id: _id,
+      ...rest,
+    };
+  },
 };
