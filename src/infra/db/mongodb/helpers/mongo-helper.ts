@@ -5,10 +5,14 @@ export const MongoHelper = {
   client: null as MongoClient,
 
   async connect(uri: string): Promise<void> {
+    console.log("Conectando no MongoDB...", uri);
+
     this.client = await MongoClient.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+
+    console.log("Conexão estabelecida!");
   },
 
   async disconnect(): Promise<void> {
